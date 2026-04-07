@@ -1,6 +1,6 @@
 # Web3Pay — Crypto Payment Gateway Demo
 
-A single-page merchant checkout demo built on top of the [Web3Pay](https://crypto-payment-gateway-ns8b.onrender.com) API. Shows the full customer payment flow — product page, live ETH payment screen, confirmation, and expiry — as a real-world integration example.
+A single-page merchant checkout demo built on top of the [Web3Pay](https://crypto-payment-gateway-ns8b.onrender.com/docs) API. Shows the full customer payment flow — product page, live ETH payment screen, confirmation, and expiry — as a real-world integration example.
 
 ## Screens
 

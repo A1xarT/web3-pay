@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Web3Pay — Crypto Payment Gateway Demo
 
-## Getting Started
+A single-page merchant checkout demo built on top of the [Web3Pay](https://crypto-payment-gateway-ns8b.onrender.com) API. Shows the full customer payment flow — product page, live ETH payment screen, confirmation, and expiry — as a real-world integration example.
 
-First, run the development server:
+## Screens
+
+| Route | Description |
+|---|---|
+| `/` | Product page with "Pay with ETH" button |
+| `/pay/[id]` | Payment screen — QR code, deposit address, ETH amount, countdown timer, auto-polls status |
+| `/pay/[id]/success` | Confirmation screen on `CONFIRMED` |
+| `/pay/[id]/expired` | Expiry screen on `EXPIRED` or timer hitting zero |
+
+## Stack
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **qrcode.react** for QR generation
+- Deployed on **Vercel**
+
+## How it works
+
+1. Clicking "Pay with ETH" calls a Next.js server route (`/api/create-payment`) which forwards the request to the gateway API using a server-side publishable key — the key is never exposed to the browser.
+2. The payment screen receives the deposit address, ETH amount, and expiry via URL params and polls `GET /payments/:id/status` every 5 seconds.
+3. On status change the app automatically transitions to the success or expired screen.
+
+## Local development
+
+```bash
+npm install
+```
+
+Create `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=https://crypto-payment-gateway-ns8b.onrender.com
+PAYMENT_GATEWAY_PUBLISHABLE_KEY=pk_live_...
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Deploy to Vercel with one click. Set the following environment variables in the Vercel dashboard:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Visibility |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Public |
+| `PAYMENT_GATEWAY_PUBLISHABLE_KEY` | Server-only |
